@@ -6,7 +6,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -19,7 +19,8 @@ public class LionTest {
     @Before
     public void setUp() throws Exception {
         mockPredator = mock(Predator.class);
-        when(mockPredator.eatMeat()).thenReturn(List.of("Мясо", "Курица"));
+
+        when(mockPredator.eatMeat()).thenReturn(List.of("Животные", "Птицы", "Рыба"));
         when(mockPredator.getFamily()).thenReturn("Кошачьи");
         when(mockPredator.getKittens()).thenReturn(3);
 
@@ -28,36 +29,24 @@ public class LionTest {
     }
 
     @Test
-    public void testHasManeForMale() throws Exception {
-        assertTrue(maleLion.doesHaveMane());
-    }
-
-    @Test
-    public void testNoManeForFemale() throws Exception {
-        assertFalse(femaleLion.doesHaveMane());
-    }
-
-    @Test
     public void testGetFood() throws Exception {
-        List<String> expectedFood = List.of("Мясо", "Курица");
+        List<String> expectedFood = List.of("Животные", "Птицы", "Рыба");
         List<String> actualFood = maleLion.getFood();
         assertEquals(expectedFood, actualFood);
     }
 
     @Test
-    public void testGetKittens() throws Exception {
+    public void testGetKittens() {
         int expectedKittens = 3;
         int actualKittens = maleLion.getKittens();
         assertEquals(expectedKittens, actualKittens);
     }
 
     @Test
-    public void testInvalidSexThrowsException() throws Exception {
-        try {
+    public void testInvalidSexThrowsException() {
+        Exception exception = assertThrows(Exception.class, () -> {
             new Lion("Неправильное значение", mockPredator);
-            fail("Ожидалось исключение, но его не было.");
-        } catch (Exception e) {
-            assertEquals("Используйте допустимые значения пола животного - самец или самка", e.getMessage());
-        }
+        });
+        assertEquals("Используйте допустимые значения пола животного - самец или самка", exception.getMessage());
     }
 }

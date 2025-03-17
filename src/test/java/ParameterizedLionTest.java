@@ -16,9 +16,8 @@ import static org.mockito.Mockito.when;
 @RunWith(Parameterized.class)
 public class ParameterizedLionTest {
 
-    private String gender;
-    private boolean expectedHasMane;
-    private Predator mockPredator;
+    private final String gender;
+    private final boolean expectedHasMane;
     private Lion lion;
 
     public ParameterizedLionTest(String gender, boolean expectedHasMane) {
@@ -36,8 +35,8 @@ public class ParameterizedLionTest {
 
     @Before
     public void setUp() throws Exception {
-        mockPredator = mock(Predator.class);
-        when(mockPredator.eatMeat()).thenReturn(List.of("Мясо", "Курица"));
+        Predator mockPredator = mock(Predator.class);
+        when(mockPredator.eatMeat()).thenReturn(List.of("Животные", "Птицы", "Рыба"));
         when(mockPredator.getFamily()).thenReturn("Кошачьи");
         when(mockPredator.getKittens()).thenReturn(3);
 
@@ -45,7 +44,7 @@ public class ParameterizedLionTest {
     }
 
     @Test
-    public void testHasMane() throws Exception {
+    public void testHasMane() {
         boolean actualHasMane = lion.doesHaveMane();
         assertEquals(expectedHasMane, actualHasMane);
     }
